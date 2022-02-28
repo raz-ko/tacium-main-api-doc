@@ -1,0 +1,131 @@
+openapi: 3.0.1
+info:
+  title: Tacium Main API
+  description: 'This is Tacium Main API.  You can find out more about Tacium
+    at [tacium.com](https://tacium.com).'
+  termsOfService: https://tacium.com
+  contact:
+    email: raz@tacium.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Tacium
+  url: https://tacium.com
+servers:
+- url: https://main.tacium.com/v1
+security:
+  - api_key: []
+tags:
+- name: Login
+  description: Login operations
+- name: Stats
+  description: Stats operations
+  externalDocs:
+    description: Find out more about Tacium stats
+    url: https://tacium.com
+
+paths:
+
+  # Login
+
+  /login/wallet:
+    post:
+      tags:
+      - Login
+      summary: Login by wallet
+      operationId: loginWallet
+      requestBody:
+        description: Wallet credentials
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WalletLogin'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  payload:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                        description: authentication jwt token
+        400:
+          description: Invalid account
+          content: {}
+        405:
+          description: Validation exception
+          content: {}
+      security: []
+      x-codegen-request-body-name: body
+
+  # Stats
+
+  /stats/account:
+    get:
+      tags:
+      - Stats
+      summary: Stats for given account 
+      operationId: statsAccount
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stats'
+        400:
+          description: Invalid account
+          content: {}
+        405:
+          description: Validation exception
+          content: {}
+      x-codegen-request-body-name: body
+
+components:
+  schemas:
+    WalletLogin:
+      required:
+      - address
+      - signature
+      type: object
+      properties:
+        address:
+          type: string
+          description: the wallet address. address should be 40 hex characteres.
+          example: '0x0123456789abcdef0123456789abcdef01234567'
+        signature:
+          type: string
+          description: |
+            current UTC time in format yyyy_MM_dd_HH_mm, signed by the wallet.
+            the signature is done by eth_sign() function (see https://eth.wiki/json-rpc/API#eth_sign).
+            signature should be 130 hex characters
+          example: '0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef01'
+    Stats:
+      type: object
+      properties:
+        stats:
+          type: array
+          items:
+            $ref: '#/components/schemas/Stat'
+    Stat:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
