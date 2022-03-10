@@ -16,7 +16,7 @@ externalDocs:
 servers:
 - url: https://main.tacium.com/v1
 security:
-  - api_key: []
+  - token: []
 tags:
 - name: Login
   description: Login operations
@@ -125,7 +125,7 @@ components:
         value:
           type: string
   securitySchemes:
-    api_key:
-      type: apiKey
-      name: api_key
+    token:
+      type: http
+      scheme: bearer
       in: header
