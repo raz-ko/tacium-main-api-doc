@@ -56,9 +56,18 @@ paths:
                   payload:
                     type: object
                     properties:
+                      user_name:
+                        type: string
+                        description: the logged in user name (empty string when not authorized)
+                      new_user:
+                        type: string
+                        description: whether this is the first login of this user
                       token:
                         type: string
-                        description: authentication jwt token
+                        description: authentication jwt token (empty string when not authorized)
+                      feedback:
+                        type: string
+                        description: feedback form for the user (empty string when feedback is not required)
         400:
           description: Invalid account
           content: {}
