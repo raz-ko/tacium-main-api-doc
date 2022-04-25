@@ -24,6 +24,8 @@ security:
 tags:
 - name: Login
   description: Login operations
+- name: Poker
+  description: Poker operations
 - name: Stats
   description: Stats operations
   externalDocs:
@@ -81,6 +83,97 @@ paths:
           description: Validation exception
           content: {}
       security: []
+      x-codegen-request-body-name: body
+
+  # Poker
+
+  /player/add:
+    post:
+      tags:
+        - Poker
+      summary: Add player
+      operationId: addPlayer
+      requestBody:
+        description: Player
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                tacian_id:
+                  type: integer
+                tacian_path:
+                  type: string
+                tacian_name:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+        400:
+          description: Invalid account
+          content: {}
+        405:
+          description: Validation exception
+          content: {}
+      x-codegen-request-body-name: body
+
+  /player/add_guest:
+    post:
+      tags:
+        - Poker
+      summary: Add guest player
+      operationId: addGuestPlayer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+        400:
+          description: Invalid account
+          content: {}
+        405:
+          description: Validation exception
+          content: {}
+      x-codegen-request-body-name: body
+
+  /player/remove:
+    post:
+      tags:
+        - Poker
+      summary: Remove player
+      operationId: removePlayer
+      requestBody:
+        description: PlayerPath
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tacian_path:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+        400:
+          description: Invalid account
+          content: {}
+        405:
+          description: Validation exception
+          content: {}
       x-codegen-request-body-name: body
 
   # Stats
