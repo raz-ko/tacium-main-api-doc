@@ -198,6 +198,27 @@ paths:
           description: Validation exception
           content: {}
       x-codegen-request-body-name: body
+
+  /stats/delta:
+    get:
+      tags:
+        - Stats
+      summary: Stats delta
+      operationId: statsDelta
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delta'
+        400:
+          description: Invalid account
+          content: {}
+        405:
+          description: Validation exception
+          content: {}
+      x-codegen-request-body-name: body
       
   # Logout
 
@@ -265,6 +286,18 @@ components:
           type: string
         value:
           type: string
+    Delta:
+      type: object
+      properties:
+        tacian_id:
+          type: integer
+        hands:
+          type: integer
+        balance:
+          type: number
+        duration:
+          type: integer
+          description: duration in minutes
   securitySchemes:
     token:
       type: http
