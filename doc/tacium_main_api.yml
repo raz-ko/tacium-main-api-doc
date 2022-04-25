@@ -29,6 +29,8 @@ tags:
   externalDocs:
     description: Find out more about Tacium stats
     url: https://tacium.com
+- name: Logout
+  description: Logout operations
 
 paths:
 
@@ -96,6 +98,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Stats'
+        400:
+          description: Invalid account
+          content: {}
+        405:
+          description: Validation exception
+          content: {}
+      x-codegen-request-body-name: body
+      
+  # Logout
+
+  /logout:
+    post:
+      tags:
+        - Logout
+      summary: Logout
+      operationId: logout
+      requestBody:
+        description: Tacian
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tacian_id: 
+                  type: string
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
         400:
           description: Invalid account
           content: {}
