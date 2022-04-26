@@ -176,6 +176,74 @@ paths:
           content: {}
       x-codegen-request-body-name: body
 
+  /player/list:
+    get:
+      tags:
+        - Poker
+      summary: Players list
+      operationId: playerList
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  players:
+                    type: array
+                    items: 
+                      type: object
+                      properties:
+                        user_id:
+                          type: integer
+                        tacian_id:
+                          type: integer
+                        tacian_path:
+                          type: string
+                        passerby:
+                          type: boolean
+        400:
+          description: Invalid account
+          content: {}
+        405:
+          description: Validation exception
+          content: {}
+      x-codegen-request-body-name: body
+
+  /table/list:
+    get:
+      tags:
+        - Poker
+      summary: Tables list
+      operationId: tableList
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tables:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        table_id:
+                          type: integer
+                        table_path:
+                          type: string
+                        players:
+                          type: integer
+        400:
+          description: Invalid account
+          content: {}
+        405:
+          description: Validation exception
+          content: {}
+      x-codegen-request-body-name: body
+
   # Stats
 
   /stats/account:
@@ -211,7 +279,38 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Delta'
+                type: object
+                properties:
+                  delta:
+                    $ref: '#/components/schemas/Delta'
+        400:
+          description: Invalid account
+          content: {}
+        405:
+          description: Validation exception
+          content: {}
+      x-codegen-request-body-name: body
+
+  /stats/leaderboard:
+    get:
+      tags:
+        - Stats
+      summary: Stats leaderboard
+      operationId: statsLeaderboard
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+          description: number of top users
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Leaderboard'
         400:
           description: Invalid account
           content: {}
@@ -298,6 +397,24 @@ components:
         duration:
           type: integer
           description: duration in minutes
+    Leaderboard:
+      type: object
+      properties:
+        leaderboard:
+          type: array
+          items:
+            $ref: '#/components/schemas/TacianBalance'
+    TacianBalance:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        tacian_id:
+          type: integer
+        tacian_name:
+          type: string
+        balance:
+          type: number
   securitySchemes:
     token:
       type: http
